@@ -1,9 +1,11 @@
-package karelbackend.demo;
+package karelbackend.demo.Book.service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+
+import karelbackend.demo.Book.model.Book;
 
 
 @Service

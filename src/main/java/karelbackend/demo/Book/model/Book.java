@@ -1,4 +1,4 @@
-package karelbackend.demo;
+package karelbackend.demo.Book.model;
 
 public class Book {
 

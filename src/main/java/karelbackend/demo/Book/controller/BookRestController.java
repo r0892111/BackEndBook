@@ -1,4 +1,4 @@
-package karelbackend.demo;
+package karelbackend.demo.Book.controller;
 
 import java.util.List;
 
@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import karelbackend.demo.Book.service.BookService;
+import karelbackend.demo.Book.model.Book;
 
 @CrossOrigin(origins = "http://127.0.0.1:5500")
 @RestController
