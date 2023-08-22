@@ -19,4 +19,13 @@ public class BookRestController {
     public List<Book> getAllBooks() {
         return bookService.getAllBooks();
     }
+
+    @GetMapping("/totalValue")
+    public double getTotalValue(){
+        return bookService.getTotalValue(); 
+    }
+    @GetMapping("/mostExpensive")
+    public Book getMostExpensive(){
+        return bookService.getMostExpensive();
+    }
 }
