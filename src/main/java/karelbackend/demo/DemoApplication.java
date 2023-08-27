@@ -1,13 +1,13 @@
 package karelbackend.demo;
 
 import java.util.List;
-import karelbackend.demo.repo.BookRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import karelbackend.demo.Book.model.Book;
+import karelbackend.demo.Book.repo.BookRepository;
 
 
 @SpringBootApplication

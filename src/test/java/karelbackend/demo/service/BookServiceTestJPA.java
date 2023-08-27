@@ -16,9 +16,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import karelbackend.demo.Book.model.Book;
+import karelbackend.demo.Book.repo.BookRepository;
 import karelbackend.demo.Book.service.BookService;
-
-import karelbackend.demo.repo.BookRepository;
 
 @ExtendWith(MockitoExtension.class)
 public class BookServiceTestJPA {

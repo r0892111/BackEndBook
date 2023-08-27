@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import karelbackend.demo.Book.model.Book;
-import karelbackend.demo.repo.BookRepository;
+import karelbackend.demo.Book.repo.BookRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
