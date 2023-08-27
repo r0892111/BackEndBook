@@ -27,19 +27,19 @@ public class BookRestController {
 
     @GetMapping("/totalValue")
     public double getTotalValue(){
-        return bookService.getTotalValue(); 
+        return bookService.getTotalValueOfCollection(); 
     }
     @GetMapping("/mostExpensive")
     public Book getMostExpensive(){
-        return bookService.getMostExpensive();
+        return bookService.getMostExpensiveBook();
     }
     @GetMapping("/search/priceMoreThen")
     public List<Book> getBooksWithPriceMoreThan(@RequestParam("price")int price){
-        return bookService.getBooksWithPriceAbove(price);
+        return bookService.getBooksWithPriceMoreThan(price);
     }
     @GetMapping("search/title/{title}")
-    public List<Book> getBookWithTitle(@PathVariable("title")String title){
-        return bookService.getBooksWithTitle(title);
+    public Book getBookWithTitle(@PathVariable("title")String title){
+        return bookService.getBookWithTitle(title);
     }
     @GetMapping("search/inColor")
     public List<Book> getBooksInColor(){

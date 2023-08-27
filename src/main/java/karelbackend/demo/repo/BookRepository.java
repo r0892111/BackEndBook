@@ -3,8 +3,12 @@ import karelbackend.demo.Book.model.*;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 public interface BookRepository extends JpaRepository<Book, Long> {
- public List<Book> findUsersByAgeAfter(int age);
- public Book findUserByEmail(String email);
+//  public List<Book> findUsersByAgeAfter(int age);
+//  public Book findBookByEmail(String email);
  public Book findBookByTitle(String title);
- 
+ public List<Book> findAllByOrderByPriceDesc();
+ public List<Book> findAll();
+ public Book findBookById(long id);
+ public List<Book> findBooksByPriceGreaterThan(int price);
+ public List<Book> findBooksByinColorIsTrue();
 }

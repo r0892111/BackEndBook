@@ -133,7 +133,7 @@ public class BookServiceTestJPA {
         booksWithPriceMoreThen.add(aBookTheSilentPatient);
         when(bookRepository.findBooksByPriceGreaterThan(50)).thenReturn(booksWithPriceMoreThen);
         // when
-        List<Book> result = service.getBooksWithPriceMoreThen(50);
+        List<Book> result = service.getBooksWithPriceMoreThan(50);
         // then
         assertEquals(booksWithPriceMoreThen.size(), result.size());
         assertTrue(result.contains(aBookTheSilentPatient));
@@ -146,7 +146,7 @@ public class BookServiceTestJPA {
         // given
         when(bookRepository.findBooksByPriceGreaterThan(Integer.MIN_VALUE)).thenReturn(books);
         // when
-        List<Book> result = service.getBooksWithPriceMoreThen(Integer.MIN_VALUE);
+        List<Book> result = service.getBooksWithPriceMoreThan(Integer.MIN_VALUE);
         // then
         assertEquals(result.size(), books.size());
     }
@@ -156,7 +156,7 @@ public class BookServiceTestJPA {
         // given
         when(bookRepository.findBooksByPriceGreaterThan(300)).thenReturn(new ArrayList<>());
         // when
-        List<Book> result = service.getBooksWithPriceMoreThen(300);
+        List<Book> result = service.getBooksWithPriceMoreThan(300);
         // then
         assertTrue(result.isEmpty());
     }

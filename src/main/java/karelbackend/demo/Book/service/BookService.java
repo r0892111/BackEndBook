@@ -65,40 +65,35 @@ public class BookService {
             result+=book.getPrice()*book.getNumberInStock();
         }return result;
     }
-    public Book getMostExpensiveBook(){
-        Book result = library.get(0);
-        if(bookRepository == null){
+    public Book getMostExpensiveBook() {
+
+        if(bookRepository.findAll().isEmpty()){
             return null;
         }
-        for(Book book:bookRepository.findAll()){
-            if(book.getPrice()> result.getPrice()){
-                result = book;
-            }
-        }return result;
+        return bookRepository.findAllByOrderByPriceDesc().get(0);
+        
+        
     }
-    public List<Book> getBooksWithPriceAbove(int price){
-        List<Book> array = new ArrayList<>();
-        for(Book book: library){
-            if(book.getPrice()>price){
-                array.add(book);
-            }
-        }return array;
+    public List<Book> getBooksWithPriceMoreThan(int price){
+        return bookRepository.findBooksByPriceGreaterThan(price);
     }
     public Book getBookWithTitle(String title){
-        // List<Book> array = new ArrayList<>();
-        // for(Book book: library){
-        //     if(book.getTitle().toLowerCase().equals(title.toLowerCase())){
-        //         array.add(book);
-        //     }
-        // }return array;
         return bookRepository.findBookByTitle(title);
     }
     public List<Book> getBooksInColor(){
-        List<Book> array = new ArrayList<>();
-        for(Book book: library){
-            if(book.isInColor()){
-                array.add(book);
-            }
-        }return array;
+        return bookRepository.findBooksByinColorIsTrue();
+    }
+    public Book getBookWithId(long id){
+        return bookRepository.findBookById(id);
+    }
+    public Book removeBook(String title){
+        Book book = bookRepository.findBookByTitle(title);
+        bookRepository.delete(book);
+        return book;
+    }
+    public Book removeBook(long id){
+        Book book = bookRepository.findBookById(id);
+        bookRepository.delete(book);
+        return book;
     }
 }
