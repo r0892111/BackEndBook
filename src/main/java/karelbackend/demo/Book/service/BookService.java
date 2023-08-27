@@ -1,6 +1,6 @@
 package karelbackend.demo.Book.service;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class BookService {
     @Autowired
     private BookRepository bookRepository;
-    public List<Book> library = new ArrayList<>();
+    
 
 
     public BookService(){
@@ -66,13 +66,16 @@ public class BookService {
         }return result;
     }
     public Book getMostExpensiveBook() {
-
-        if(bookRepository.findAll().isEmpty()){
-            return null;
+        List<Book> books = bookRepository.findAll();
+        Book mostExpensive = null;
+        if (books.size()>0) {
+            mostExpensive = books.get(0);
+            for(Book book : books) {
+                if (book.getPrice() > mostExpensive.getPrice())
+                    mostExpensive = book;
+            }
         }
-        return bookRepository.findAllByOrderByPriceDesc().get(0);
-        
-        
+        return mostExpensive;
     }
     public List<Book> getBooksWithPriceMoreThan(int price){
         return bookRepository.findBooksByPriceGreaterThan(price);
@@ -83,7 +86,7 @@ public class BookService {
     public List<Book> getBooksInColor(){
         return bookRepository.findBooksByinColorIsTrue();
     }
-    public Book getBookWithId(long id){
+    public Book getBookWithId(int id){
         return bookRepository.findBookById(id);
     }
     public Book removeBook(String title){
@@ -91,9 +94,12 @@ public class BookService {
         bookRepository.delete(book);
         return book;
     }
-    public Book removeBook(long id){
+    public Book removeBook(int id){
         Book book = bookRepository.findBookById(id);
         bookRepository.delete(book);
         return book;
+    }
+    public List<Book> getBooksWithPriceAndNumberInStockGreaterthan(double price, int numberInStock){
+        return bookRepository.findBooksByPriceGreaterThanAndNumberInStockGreaterThan(price, numberInStock);
     }
 }

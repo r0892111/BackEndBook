@@ -10,15 +10,34 @@ const renderBooks = (books) => {
             addTableCell({ tableRow, value: `${book.numberInStock}` });
             addTableCell({ tableRow, value: `${book.price}` });
             addTableCell({ tableRow, value: `${book.priceInDollar.toFixed(2)}` });
-
+            let button = document.createElement("button");
+            button.innerHTML = "Delete";
+            button.addEventListener("click", () => deleteBook(book));
+            tableRow.appendChild(button);
         });
+}
+
+const deleteBook = async (book) => {
+    const response = await fetch(`http://localhost:8080/api/book/remove/${book.title}`,
+        {
+            method: "DELETE",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+        });
+    const result = await response.json();
+    if (result != null) {
+        document.getElementById("message").innerText =
+            `Book with title ${result.title} is removed`;
+    }
+    fetchAndRenderAllBooks();
 }
 
 const fetchBooks = async (url) => {
     const response = await fetch(url);
     const result = await response.json();
     books.length = 0;
-    console.log(result);
     books.push(...result);
 }
 
@@ -69,6 +88,3 @@ const showTotalValue = async () => {
 }
 
 showTotalValue();
-
-
-

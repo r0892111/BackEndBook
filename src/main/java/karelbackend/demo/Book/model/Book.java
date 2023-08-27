@@ -6,16 +6,25 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 @Entity
 @Table(name = "books")
 
 public class Book {
+    
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Id
+   
     public long id;
+    @NotBlank(message="Needs to be filled in")
     private String title;
     private boolean inColor;
+    
+    @Positive(message="age may not be negative")
     private int numberInStock;
+    
+    @Positive(message="age may not be negative")
     private double price;
     public Book(){}
     public Book(String title,int numberInStock,double price, boolean inColor){

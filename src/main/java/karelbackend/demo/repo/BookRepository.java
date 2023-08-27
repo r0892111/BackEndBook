@@ -11,4 +11,5 @@ public interface BookRepository extends JpaRepository<Book, Long> {
  public Book findBookById(long id);
  public List<Book> findBooksByPriceGreaterThan(int price);
  public List<Book> findBooksByinColorIsTrue();
+ public List<Book> findBooksByPriceGreaterThanAndNumberInStockGreaterThan(double price, int numberInStock);
 }
