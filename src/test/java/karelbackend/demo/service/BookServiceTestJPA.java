@@ -3,12 +3,15 @@ package karelbackend.demo.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,6 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import karelbackend.demo.Book.model.Book;
 import karelbackend.demo.Book.repo.BookRepository;
 import karelbackend.demo.Book.service.BookService;
+import karelbackend.demo.User.service.BookServiceException;
 
 @ExtendWith(MockitoExtension.class)
 public class BookServiceTestJPA {
@@ -232,5 +236,69 @@ public class BookServiceTestJPA {
         Book result = service.removeBook(0);
         // then
         assertNull(result);;
+    }
+    // Update
+    @Test
+    public void givenBookDonQuichotInRepo_whenBookIsUpdatedWithValidValuesAllDifferentFromOriginal_thenBookHasNewValues() throws BookServiceException {
+        // change fields of aBookDonQuichot (id:0) to fields of anExtraBook
+        // given
+        when(bookRepository.findBookById(0)).thenReturn(aBookDonQuichot);
+        when(bookRepository.findBookByTitle(anExtraBook.getTitle())).thenReturn(null);
+        when(bookRepository.save(aBookDonQuichot)).thenReturn(aBookDonQuichot);
+        // when
+        service.updateBook(anExtraBook, 0);
+        // then
+        assertEquals(anExtraBook.getTitle() , aBookDonQuichot.getTitle());
+        assertEquals(anExtraBook.getNumberInStock(), aBookDonQuichot.getNumberInStock());
+        assertEquals(anExtraBook.getPrice(), aBookDonQuichot.getPrice());
+
+    }
+
+    @Test
+    public void givenBookDonQuichotInRepo_whenBookIsUpdatedWithValidValuesButSameTitle_thenBookHasNewValues()
+            throws BookServiceException {
+        // change fields of aBookDonQuichot (id:0) to fields of aBookDonQuichotUpdated
+        // given
+        Book aBookDonQuichotUpdated = new Book("Don Quichotte", 5, 207, false);
+        when(bookRepository.findBookById(0)).thenReturn(aBookDonQuichot);
+        // following when-statement is necessary to avoid a common mistake in the method
+        // update
+        // bypass the strict stubbing with lenient()
+        // https://www.baeldung.com/mockito-unnecessary-stubbing-exception#lenient-stubbing
+        lenient().when(bookRepository.findBookByTitle(aBookDonQuichotUpdated.getTitle())).thenReturn(aBookDonQuichot);
+        when(bookRepository.save(aBookDonQuichot)).thenReturn(aBookDonQuichot);
+        // when
+        service.updateBook(aBookDonQuichotUpdated, 0);
+        // then
+        assertEquals(aBookDonQuichotUpdated.getTitle(), aBookDonQuichot.getTitle());
+        assertEquals(aBookDonQuichotUpdated.getNumberInStock(), aBookDonQuichot.getNumberInStock());
+        assertEquals(aBookDonQuichotUpdated.getPrice(), aBookDonQuichot.getPrice());
+
+    }
+
+    @Test
+    public void givenBookDonQuichotInRepo_whenBookIsUpdatedToTitleAlreadyInLibrary_thenServiceExceptionIsThrown()
+            throws BookServiceException {
+        // change fields of aBookDonQuichot (id:0) to fields of anExtraBook
+        // given
+        when(bookRepository.findBookById(0)).thenReturn(aBookDonQuichot);
+        when(bookRepository.findBookByTitle(anExtraBook.getTitle())).thenReturn(anExtraBook);
+        // when
+        BookServiceException ex = assertThrows(BookServiceException.class, ()->service.updateBook(anExtraBook, 0));
+
+        // then
+        assertEquals("Title must be unique", ex.getMessage());
+        assertEquals("title", ex.getField());
+    }
+
+    @Test
+    public void givenBookNotInRepo_whenBookUpdatedById_thenServiceExceptionIsThrown() {
+                // given
+                when(bookRepository.findBookById(0)).thenReturn(null);
+                // when
+                BookServiceException ex = Assertions.assertThrows(BookServiceException.class, ()-> service.updateBook(aBookDonQuichot,0));
+                // then
+                assertEquals("id", ex.getField());       
+                assertEquals("No book with given id", ex.getMessage());
     }
 }

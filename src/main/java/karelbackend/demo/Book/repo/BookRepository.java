@@ -8,7 +8,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
  public Book findBookByTitle(String title);
  public List<Book> findAllByOrderByPriceDesc();
  public List<Book> findAll();
- public Book findBookById(long id);
+ public Book findBookById(int id);
  public List<Book> findBooksByPriceGreaterThan(int price);
  public List<Book> findBooksByinColorIsTrue();
  public List<Book> findBooksByPriceGreaterThanAndNumberInStockGreaterThan(double price, int numberInStock);

@@ -1,11 +1,15 @@
 package karelbackend.demo.model;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import karelbackend.demo.Book.model.*;
+import karelbackend.demo.Book.repo.BookRepository;
+import karelbackend.demo.User.service.BookServiceException;
 
 public class BookTest {
 
@@ -15,6 +19,7 @@ public class BookTest {
 
     private Book book_hobbit_inColor;
     private Book book_hobbit_notInColor;
+    private BookRepository bookRepository;
 
     @BeforeEach
     public void setUp() {
@@ -87,5 +92,6 @@ public class BookTest {
         String out = "The Hobbit costs €25.5. There are 1 items present. The book is not in color.";
         assertEquals(out, book_hobbit_notInColor.toString());
     }
+
 
 }

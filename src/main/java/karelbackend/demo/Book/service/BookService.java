@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 
 import karelbackend.demo.Book.model.Book;
 import karelbackend.demo.Book.repo.BookRepository;
+import karelbackend.demo.User.service.BookServiceException;
 
+import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -102,4 +104,35 @@ public class BookService {
     public List<Book> getBooksWithPriceAndNumberInStockGreaterthan(double price, int numberInStock){
         return bookRepository.findBooksByPriceGreaterThanAndNumberInStockGreaterThan(price, numberInStock);
     }
+    public void updateBook(Book book, int id) throws ServiceException {
+        // Find the original book by its ID
+        Book originalBook = bookRepository.findBookById(id);
+        
+        // Check if a book with the updated title already exists
+        Book existingBookWithSameTitle = bookRepository.findBookByTitle(book.getTitle());
+        if (existingBookWithSameTitle != null && existingBookWithSameTitle.getId() != id) {
+            throw new ServiceException("Book with this title already exists");
+        }
+
+    
+        // Update the original book's information
+        originalBook.setTitle(book.getTitle());
+        originalBook.setNumberInStock(book.getNumberInStock());
+        originalBook.setPrice(book.getPrice());
+
+        // if (existingBookWithSameTitle != null ) {
+        //     throw new ServiceException("Title must be unique");
+        // }
+    
+        // Save the updated book
+        bookRepository.save(originalBook);
+    }
 }
+
+
+
+
+
+
+
+

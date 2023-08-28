@@ -18,14 +18,14 @@ public class Book {
    
     public long id;
     @NotBlank(message="Needs to be filled in")
-    private String title;
+    public String title;
     private boolean inColor;
     
     @Positive(message="age may not be negative")
-    private int numberInStock;
+    public int numberInStock;
     
     @Positive(message="age may not be negative")
-    private double price;
+    public double price;
     public Book(){}
     public Book(String title,int numberInStock,double price, boolean inColor){
         this.title = title;
@@ -69,5 +69,8 @@ public class Book {
             value = " is not in color.";
         }
         return this.title+" costs €"+this.price+". There are "+this.numberInStock+" items present. The book"+value;
+    }
+    public int getId() {
+        return 0;
     }
 }
